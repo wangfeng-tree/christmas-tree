@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merry Christmas</title>
+<style>
+body{
+    margin:0;
+    background:#000;
+    overflow:hidden;
+    text-align:center;
+    color:#fff;
+    font-family:Arial;
+}
+canvas{display:block;}
+h1{margin-top:30px;}
+.name{color:#ffd700;font-size:36px;}
+.tip{position:fixed;bottom:20px;width:100%;font-size:14px;}
+</style>
+</head>
+<body>
+
+<h1>🎄 Merry Christmas 🎄</h1>
+<div class="name" id="name"></div>
+<canvas id="c"></canvas>
+<div class="tip">点击屏幕播放音乐 🎶</div>
+
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/12/02/audio_4d6a3b3a6d.mp3">
+</audio>
+
+<script>
+const params=new URLSearchParams(location.search);
+document.getElementById("name").innerText=params.get("name")||"亲爱的朋友";
+
+const c=document.getElementById("c"),x=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+
+let p=[];
+for(let i=0;i<400;i++){
+ let y=Math.random()*c.height*0.6;
+ let w=(c.height*0.6-y)*0.6;
+ p.push({
+  x:c.width/2+(Math.random()-0.5)*w,
+  y:y+150,
+  r:Math.random()*2+1,
+  a:Math.random()
+ });
+}
+
+function d(){
+ x.clearRect(0,0,c.width,c.height);
+ p.forEach(o=>{
+  o.a+=Math.random()*0.1-0.05;
+  x.globalAlpha=Math.abs(o.a);
+  x.fillStyle=["red","gold","lime","cyan"][Math.floor(Math.random()*4)];
+  x.beginPath();
+  x.arc(o.x,o.y,o.r,0,Math.PI*2);
+  x.fill();
+ });
+ requestAnimationFrame(d);
+}
+d();
+
+document.body.onclick=()=>document.getElementById("music").play();
+</script>
+
+</body>
+</html>
